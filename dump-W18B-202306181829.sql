@@ -32,7 +32,7 @@ CREATE TABLE `client` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_un` (`username`),
   UNIQUE KEY `email_un` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
-INSERT INTO `client` VALUES (1,'dale1','dale1@email.com','password','https://images.pexels.com/photos/9091291/pexels-photo-9091291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','my name is dale1 and this is my bio.'),(3,'dale2','dale2@email.com','password','https://images.pexels.com/photos/9091291/pexels-photo-9091291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','my name is dale1 and this is my bio.');
+INSERT INTO `client` VALUES (1,'dale1','dale1@email.com','password','https://images.pexels.com/photos/9091291/pexels-photo-9091291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','my name is dale1 and this is my bio.'),(3,'dale2','dale2@email.com','password','https://images.pexels.com/photos/9091291/pexels-photo-9091291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','my name is dale1 and this is my bio.'),(4,'dale3','dale3@email.com','password','https://images.pexels.com/photos/9091291/pexels-photo-9091291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','My name is Dale and this is my bio'),(5,'dale4','dale4@email.com','password','https://images.pexels.com/photos/13196768/pexels-photo-13196768.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','sine random bio about me');
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -60,7 +60,7 @@ CREATE TABLE `login` (
   UNIQUE KEY `token_un` (`token`),
   KEY `login_FK` (`client_id`),
   CONSTRAINT `login_FK` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +69,7 @@ CREATE TABLE `login` (
 
 LOCK TABLES `login` WRITE;
 /*!40000 ALTER TABLE `login` DISABLE KEYS */;
-INSERT INTO `login` VALUES (2,3,'randomfaketoken1');
+INSERT INTO `login` VALUES (4,3,'69130c930a754736959dc9f591cefdb3'),(5,3,'432b678b58514215a02bac3f56add0e3'),(6,3,'396bab09f5574398b7d75cfaf1bb4043'),(7,3,'be3fe05d193e4842a63162f9a41d8bff'),(8,1,'f3c1ced188414ad280118c476c7f2a74'),(9,1,'68dfdc04bb4547baae224adab458fed7'),(10,1,'115c84c1c99740d580fb7fd34c9c75a2'),(11,1,'97d040f369ab4073a48385dfb5e84f26'),(12,1,'aa33db9055f947a0ae87fefefaf3f2c7'),(13,1,'fd7ce00fb7804320af063c49cf88da5f'),(14,1,'240abd19de1e47d082a70e500d643118'),(15,5,'38ce83a609004ef7bdc351f6cda6296b'),(16,5,'7c3df90e55764932895138a8f83300f2'),(17,5,'ed22053f2faa41d28086221fd7318bb2'),(18,5,'736a97b60d714b4c97ed49ede3f2e2e1'),(19,5,'6d94319abf304eb9a5e27ccd9cebbac3'),(20,5,'02133b04e63d4a34a01d36a6c75ce9b9'),(21,5,'e9cd87dcb0a949b1afb3971ef9ba28b0');
 /*!40000 ALTER TABLE `login` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,8 +132,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `login`(username_input varchar(100),
     MODIFIES SQL DATA
 begin
 	INSERT INTO login (client_id, token) values
-	((select id from client where username = username_input and password = password_input), token_input);
-	select id from client where username = username_input and password = password_input;
+	((select id from client where username = username_input and password = password_input), token_input);
+	select convert(l.token using "utf8")as token from login l where id = last_insert_id();
 	commit;
 END ;;
 DELIMITER ;
@@ -173,4 +173,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-16 17:56:27
+-- Dump completed on 2023-06-18 18:29:02
