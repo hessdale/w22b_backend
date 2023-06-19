@@ -101,7 +101,7 @@ def get_profile():
 if(dbcreds.production_mode == True):
     print("Running Production Mode")
     import bjoern #type: ignore
-    bjoern.run(app,"0.0.0.0",5000)
+    bjoern.run(app,"0.0.0.0",5194)
 else:
     from flask_cors import CORS
     CORS(app)
